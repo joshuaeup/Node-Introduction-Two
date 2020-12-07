@@ -1,0 +1,22 @@
+{
+    "name": "@joshuaeup/easy",
+    "version": "1.0.1",
+    "main": "index.js",
+    "scripts": {
+        "test": "node test.js"
+    },
+    "keywords": [],
+    "author": "Joshua Proctor",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/joshuaeup/Node-Introduction-Two.git"
+    },
+    "bugs": {
+        "url": "https://github.com/joshuaeup/Node-Introduction-Two/issues"
+    },
+    "homepage": "https://github.com/joshuaeup/Node-Introduction-Two#readme",
+    "description": "## Easy",
+    "dependencies": {},
+    "devDependencies": {}
+}

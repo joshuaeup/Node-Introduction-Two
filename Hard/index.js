@@ -1,6 +1,17 @@
 // END POINTS
+// GET
 // /employees - ALL EMPLOYEES
 // /employees/:id - DIRECT EMPLOYEE
+
+// POST
+// /employees - ALL EMPLOYEES
+
+// PUT
+// /employees - ALL EMPLOYEES
+
+// DELETE
+// /employees/:id - DIRECT EMPLOYEE
+
 "use strict";
 
 // Require express module

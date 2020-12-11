@@ -28,7 +28,7 @@ app.get("/employees/:id", (req, res) => {
     // Check if the employee exist. if exist the object will return. else it will be undefined.
     if (!chosenEmployee) {
         // Set status code to not found and display message
-        res.status(404).send("Employee cannot be found.");
+        return res.status(404).send("Employee cannot be found.");
     }
 
     // Send result to page

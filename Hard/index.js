@@ -24,17 +24,17 @@ const app = express();
 // Data from json file
 const data = require("./employees.json");
 
-// Middleware to extra incoming data of a POST request
-const bodyParser = require("body-parser");
+// Joi class allows for easier input validation
+const Joi = require("joi");
 
+// We want to send json data
 // Configuring express to use body-parser as middle-ware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false })); // If submitting from form(Form Data)
+app.use(express.json()); // Allows data to be parsed from JSON
 
 // Get the full collection of employees
 app.get("/employees", (req, res) => {
-    res.send(data);
-    res.status(200);
+    return res.status(200).send(data);
 });
 
 // Get employee with specified id
@@ -47,34 +47,39 @@ app.get("/employees/:id", (req, res) => {
     // Check if the employee exist. if exist the object will return. else it will be undefined.
     if (!chosenEmployee) {
         // Set status code to not found and display message
-        res.status(404).send("Employee cannot be found.");
-    } else {
-        // employee exists
-        res.status(200);
+        return res.status(404).send("Employee cannot be found.");
     }
 
     // Send result to page
-    res.send(chosenEmployee);
+    res.status(200).send(chosenEmployee);
 });
 
 // Adds an employee to JSON
 app.post("/employees", (req, res) => {
-    data.employees.push({
-        employeeID: 11,
-        name: "AJ",
-        salary: 20000,
-        departmentName: "Analyst",
+    // Develop a schema to manage the structure of the inputted data
+    const schema = Joi.object({
+        name: Joi.string().min(3).required(), // this ensures that the name property is required and must be a string of 3 characters or more.
+        salary: Joi.number().positive().required(),
+        departmentName: Joi.string().min(2).required(),
     });
-    // const body = req.body;
-    // data.employees.push({
-    //     employeeID: body.employeeID,
-    //     name: body.name,
-    //     salary: body.salary,
-    //     departmentName: body.departmentName,
-    // });
-    //?employeeID=11&name=Terry&salary=30000&departmentName=QA
-    // console.log(body);
-    res.end("yes");
+
+    const newEmployee = {
+        employeeID: data.employees.length + 1,
+        name: req.body.name,
+        salary: req.body.salary,
+        departmentName: req.body.departmentName,
+    };
+
+    // the Joi.validate() method takes the entire req.body and the created schema(Guidelines) then stores the result in an object
+    const result = schema.validate(req.body, newEmployee);
+
+    if (result.error) {
+        return res.status(400).send(result.error.details[0].message);
+    }
+
+    data.employees.push(newEmployee);
+
+    res.send(newEmployee);
 });
 
 // Updates an employees data
@@ -86,12 +91,38 @@ app.put("/employees/:id", (req, res) => {
     // Check if the employee exist. if exist the object will return. else it will be undefined.
     if (!chosenEmployee) {
         // Set status code to not found and display message
-        res.status(404).send("Employee cannot be found.");
+        return res.status(404).send("Employee cannot be found.");
     }
 
-    // Give the specified employee's salary a 100k pay increase
-    chosenEmployee.salary += 100000;
-    // Return chosenEmployee with increased salary
+    // Develop a schema to manage the structure of the inputted data
+    const schema = Joi.object({
+        name: Joi.string().min(3).required(), // this ensures that the name property is required and must be a string of 3 characters or more.
+        salary: Joi.number().positive().required(),
+        departmentName: Joi.string().min(2).required(),
+    });
+
+    const updatedEmployee = {
+        employeeID: data.employees.length + 1,
+        name: req.body.name,
+        salary: req.body.salary,
+        departmentName: req.body.departmentName,
+    };
+
+    // the Joi.validate() method takes the entire req.body and the created schema(Guidelines) then stores the result in an object
+    const result = schema.validate(req.body, updatedEmployee);
+
+    if (result.error) {
+        return res.status(400).send(result.error.details[0].message);
+    }
+
+    // Update Name
+    chosenEmployee.name = updatedEmployee.name;
+    // Update salary
+    chosenEmployee.salary = updatedEmployee.salary;
+    // Update Department
+    chosenEmployee.departmentName = updatedEmployee.departmentName;
+
+    // Return chosenEmployee with updated values
     res.send(chosenEmployee);
 });
 
@@ -104,7 +135,7 @@ app.delete("/employees/:id", (req, res) => {
     // Check if the employee exist. if exist the object will return. else it will be undefined.
     if (!chosenEmployee) {
         // Set status code to not found and display message
-        res.status(404).send("Employee cannot be found.");
+        return res.status(404).send("Employee cannot be found.");
     }
 
     // Store employees ID

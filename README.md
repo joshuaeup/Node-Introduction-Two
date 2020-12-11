@@ -1,7 +1,6 @@
 # Node-Introduction-Two
 
-## End Points
-### // END POINTS
+## END POINTS
 #### GET
 ###### /employees - ALL EMPLOYEES
 ###### /employees/:id - DIRECT EMPLOYEE

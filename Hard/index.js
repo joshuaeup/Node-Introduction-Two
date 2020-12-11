@@ -4,10 +4,10 @@
 // /employees/:id - DIRECT EMPLOYEE
 
 // POST
-// /employees - ALL EMPLOYEES
+// /employees - ALL EMPLOYEES - JSON BODY FORMAT ({"name": "", "salary": 0, "departmentName": ""})
 
 // PUT
-// /employees - ALL EMPLOYEES
+// /employees - ALL EMPLOYEES - JSON BODY FORMAT ({"name": "", "salary": 0, "departmentName": ""})
 
 // DELETE
 // /employees/:id - DIRECT EMPLOYEE

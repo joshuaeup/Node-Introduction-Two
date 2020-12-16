@@ -80,7 +80,7 @@ router.put("/employees/:id", (req, res) => {
     });
 
     const updatedEmployee = {
-        employeeID: data.employees.length + 1,
+        employeeID: chosenEmployee.employeeID,
         name: req.body.name,
         salary: req.body.salary,
         departmentName: req.body.departmentName,
